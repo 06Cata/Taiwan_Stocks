@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>購買股票計算(含扣手續費)</title>
+</head>
+<body>
+    <h1>填寫買進股票信息(含扣手續費)</h1>
+    <form id="buyForm" action="/calculate_buy" method="POST">
+        <label for="buying_stock_price">購買股票價格：</label>
+        <input type="number" name="buying_stock_price" id="buying_stock_price" step="0.01" required><br>
+
+        <label for="buying_quantity">購買股票股數：</label>
+        <input type="number" name="buying_quantity" id="buying_quantity" min="1" required><br>
+
+        <label for="discount">券商手續費折扣(請換算成數字，5折=>0.5): </label>
+        <input type="number" name="discount" id="discount" step="0.01" required><br>
+
+        <button type="submit">計算</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('buyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/calculate_buy', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = data;
+            })
+            .catch(error => console.error('錯誤:', error));
+        });
+    </script>
+</body>
+</html>
