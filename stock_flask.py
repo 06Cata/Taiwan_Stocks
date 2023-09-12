@@ -73,7 +73,7 @@ def calculate_compound_interest():
     years = int(request.form['years'])
     future_value = calculate_future_value_annually(initial_amount, monthly_saving, years, annual_interest_rate)
 
-    result = f"30 年後，帳戶總額將達到 {future_value} 元"
+    result = f"{years} 年後，帳戶總額將達到 {future_value} 元"
     
     return result
 
