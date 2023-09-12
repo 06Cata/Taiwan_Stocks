@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template, jsonify
-from stock_functions import calculate_stock_buying_price, calculate_buying_fee, calculate_stock_selling_price, calculate_selling_fee, calculate_earning
+from stock_functions import calculate_stock_buying_price, calculate_buying_fee, calculate_stock_selling_price, calculate_selling_fee, calculate_earning, calculate_future_value_annually
 
 import math
 
@@ -21,6 +21,11 @@ def sell():
 def buy_sell():
     return render_template('earning.html')
 
+@app.route('/compound_interest')
+def compound_interest():
+    return render_template('compound_interest.html')
+
+#
 @app.route('/calculate_buy', methods=['POST'])
 def calculate_buy():
     buying_stock_price = float(request.form['buying_stock_price'])
@@ -57,6 +62,18 @@ def calculate_earning_route():
     earning_result, earning_money = calculate_earning(buy_stock_price, sell_stock_price, quantity, discount)
 
     result = f"{earning_result}, 獲利: {earning_money} NTD"
+    
+    return result
+
+@app.route('/calculate_compound_interest', methods=['POST'])
+def calculate_compound_interest():
+    initial_amount = int(request.form['initial_amount'])
+    monthly_saving = int(request.form['monthly_saving'])
+    annual_interest_rate = float(request.form['annual_interest_rate'])
+    years = int(request.form['years'])
+    future_value = calculate_future_value_annually(initial_amount, monthly_saving, years, annual_interest_rate)
+
+    result = f"30 年後，帳戶總額將達到 {future_value} 元"
     
     return result
 

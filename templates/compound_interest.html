@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>定期定額複利計算機</title>
+</head>
+<body>
+    <h1>定期定額複利計算機</h1>
+    <form id="compoundInterestForm">
+        <label for="initial_amount">起始金額：</label>
+        <input type="number" name="initial_amount" id="initial_amount" step="0.01" required><br>
+
+        <label for="monthly_saving">每月投資：</label>
+        <input type="number" name="monthly_saving" id="monthly_saving" step="0.01" required><br>
+
+        <label for="years">投資年數：</label>
+        <input type="number" name="years" id="years" min="1" required><br>
+
+        <label for="annual_interest_rate">年利率 (%) : </label>
+        <input type="number" name="annual_interest_rate" id="annual_interest_rate" step="0.01" required><br>
+
+        <button type="submit">計算</button>
+    </form>
+
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('compoundInterestForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/calculate_compound_interest', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                const resultElement = document.getElementById('result');
+                resultElement.textContent = '未來價值：' + data;
+            })
+            .catch(error => console.error('錯誤:', error));
+        });
+    </script>
+</body>
+</html>
